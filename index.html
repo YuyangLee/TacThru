@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html class="dark-theme">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="Fingertip-integrated Tactile and Visual Perception for Fine-grained and Contact-rich Manipulation">
+  <meta name="keywords" content="Robotic manipulation, tactile sensing, proximity sensing, imitation learning">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TacThru: The STS Sensor</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script> -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <!-- <link rel="stylesheet" href="./static/css/index.css"> -->
+  <link rel="icon" href="./static/images/TacThru.jpeg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <style>
+    body {
+      cursor: url('/assets/cursor/cursor_40.png') 0 0, url('/assets/cursor/cursor_40.png') 0 0, auto;
+    }
+
+    .task-slide {
+      display: none;
+    }
+
+    .task-slide.is-active {
+      display: block;
+    }
+
+    .task-slider-nav {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .task-slider-nav button {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div class="navbar-menu">
+      <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            Related Research
+          </a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://https://taccel-simulator.github.io/" target="_blank">
+              [NeurIPS 2025] Taccel: High-performance GPU simulator for vision-based tactile robotics
+            </a>
+            <a class="navbar-item" href="https://www.nature.com/articles/s42256-025-01053-3" target="_blank">
+              [Nature Machine Intelligence] F-TAC Hand: A biomimetic hand with full-hand tactile sensing
+            </a>
+            <a class="navbar-item" href="https://tacman-aom.github.io/" target="_blank">
+              [T-RO] TacMan: Tactile-informed articulated object manipulation
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title"><br />Simultaneous Tactile-Visual
+              Perception for Learning
+              Multimodal Robot Manipulation</h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><a href="https://yuyangli.com">Yuyang Li</a><sup>1,2,3,4⚖️</sup>,</span>
+              <span class="author-block"><a href="https://yinghanchen.com">Yinghan Chen</a><sup>1,2,4,6⚖️</sup>,</span>
+              <span class="author-block"><a href="https://zihangzhao.com/">Zihang Zhao</a><sup>1,2,4</sup>,</span>
+              <span class="author-block"><a href="https://xiaoyao-li.github.io/">Puhao
+                  Li</a><sup>3,4</sup>,</span><br />
+              <span class="author-block"><a href="https://tengyu.ai/">Tengyu Liu</a><sup>3,4✉️</sup>,</span>
+              <span class="author-block"><a href="https://siyuanhuang.com/">Siyuan Huang</a><sup>3,4✉️</sup>,</span>
+              <span class="author-block"><a href="https://yzhu.io/">Yixin Zhu</a><sup>1,2,4,5✉️</sup>,</span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="eql-cntrb"><small><sup>⚖️</sup> Equal contributors</small></span>
+              <span class="eql-cntrb"><small>&nbsp;&nbsp;&nbsp;<sup>✉️</sup> Corresponding authors</span><br />
+              <span class="author-block"><sup><small>1</small></sup>Peking University</span>
+              <span class="author-block"><sup><small>2</small></sup>Beijing Key Lab of Behavior and Mental Health,
+                Peking University</span><br />
+              <span class="author-block"><sup><small>3</small></sup>Beijing Institute for General Artificial
+                Intelligence</span>
+              <span class="author-block"><sup><small>4</small></sup>State Key Lab of General Artificial
+                Intelligence</span><br />
+              <span class="author-block"><sup><small>5</small></sup>PKU-Wuhan Institute for Artificial
+                Intelligence</span>
+              <span class="author-block"><sup><small>6</small></sup>University of Cambridge</span><br />
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+
+                <!-- Preprint -->
+                <span class="link-block">
+                  <a href="https://tacthru.yuyang.li/assets/TacThru.pdf" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Preprint</span>
+                  </a>
+                </span>
+
+                <!-- arXiv (placeholder, empty for now) -->
+                <span class="link-block">
+                  <a href="#" class="external-link button is-normal is-rounded is-dark"
+                    style="pointer-events: none; opacity: 0.5;">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv (Coming soon)</span>
+                  </a>
+                </span>
+
+                <!-- Code -->
+                <span class="link-block">
+                  <a href="https://github.com/YuyangLee/TacThru" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+
+                <!-- Data -->
+                <span class="link-block">
+                  <a href="https://huggingface.co/datasets/aidenli/tacthru_umi_tasks" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-database"></i>
+                    </span>
+                    <span>Data</span>
+                  </a>
+                </span>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section py-0">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1145307821"
+              frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen
+              style="position:absolute;top:0;left:0;width:100%;height:100%;"
+              title="Simultaneous Tactile-Visual Perception for Learning Multimodal Robot Manipulation"></iframe>
+          </div>
+          <script src="https://player.vimeo.com/api/player.js"></script>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <!-- <img src="static\images\teaser.svg" alt="Teaser" width="100%"> -->
+        <!-- <div class="column is-full-width has-text-centered mt-5">
+          <h2 class="title is-3">Abstract</h2>
+        </div> -->
+        <div class="content has-text-justified">
+          <p>
+            Robotic manipulation requires both rich multimodal
+            perception and effective learning frameworks to handle complex
+            real-world tasks. See-Through-Skin (STS) sensors, which
+            combine tactile and visual perception, offer promising sensing
+            capabilities, while modern imitation learning provides powerful
+            tools for policy acquisition. However, existing STS designs lack
+            simultaneous multimodal perception and suffer from unreliable
+            tactile tracking. Furthermore, integrating these rich multimodal
+            signals into learning-based manipulation pipelines remains an
+            open challenge. We introduce TacThru, an STS sensor enabling
+            simultaneous visual perception and robust tactile signal extraction,
+            and TacThru-UMI, an imitation learning framework that
+            leverages these multimodal signals for manipulation. Our sensor
+            features a fully transparent elastomer, persistent illumination,
+            novel keyline markers, and efficient tracking, while our learning
+            system integrates these signals through a Transformer-based
+            Diffusion Policy. Experiments on five challenging real-world tasks
+            show that TacThru-UMI achieves an average success rate of
+            85.5%, significantly outperforming the baselines of alternating
+            tactile-visual (66.3%) and vision-only (55.4%). The system excels
+            in critical scenarios, including contact detection with thin and
+            soft objects and precision manipulation requiring multimodal
+            coordination. This work demonstrates that combining simultaneous
+            multimodal perception with modern learning frameworks
+            enables more precise, adaptable robotic manipulation.
+          </p>
+        </div>
+        <strong>Contributions:</strong>
+        <div class="content">
+          <ul>
+            <li> TacThru: a novel STS sensor that enables efficient, robust, simultaneous tactile-visual perception.
+            </li>
+            <li> TacThru-UMI: an imitation learning system with a design compatible with UMI for data collection,
+              processing, and policy deployment.</li>
+            <li> A comprehensive experimental validation demonstrating how TacThru's simultaneous multimodal perception
+              enables superior fine-grained and contact-rich manipulation.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section py-0">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+
+        <div class="column is-full-width has-text-centered mt-5 mb-5">
+          <h2 class="title is-3">The TacThru Sensor</h2>
+        </div>
+
+        <div class="columns is-vcentered">
+
+          <div class="column is-size-6">
+            <img src="static\images\ws-marker_track.svg" alt="Sensor" style="max-height: 400px;">
+            <img src="static\images\ws-marker_kf.png" alt="Sensor" style="max-height: 400px;">
+          </div>
+
+          <div class="column is-6">
+            <h4 class="title is-4" style="margin-bottom: 1rem;">Why it works?</h4>
+            <table>
+              <tr>
+                <td width="40" valign="top">(i)</td>
+                <td>A fully transparent elastomer that enables clear visual perception.</td>
+              </tr>
+              <tr>
+                <td width="40" valign="top">(ii)</td>
+                <td>Persistent illumination that eliminates mode switching.</td>
+              </tr>
+              <tr>
+                <td width="40" valign="top">(iii)</td>
+                <td>Novel keyline markers that maintain visibility against any background.</td>
+              </tr>
+              <tr>
+                <td width="40" valign="top">(iv)</td>
+                <td>An efficient tracking algorithm processing marker deviations at 6.08 ms per frame.</td>
+              </tr>
+            </table>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section py-0">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+
+        <div class="column is-full-width has-text-centered mb-5">
+          <h2 class="title is-3">TacThru and TacThru-UMI</h2>
+        </div>
+
+        <div class="columns is-vcentered">
+
+          <div class="column is-5">
+            <img src="static\images\hardware.svg" alt="Hardware" style="max-height: 400px;">
+          </div>
+
+          <div class="column is-7">
+            <table>
+              <tr>
+                <td valign="top" width="40">(a)</td>
+                <td>
+                  The keyline marker elastomer is fabricated by sequentially spraying inner
+                  (black) and outer (white) markers on transparent elastomer using laser-cut masks.
+                </td>
+              </tr>
+              <tr>
+                <td valign="top" width="40">(b)</td>
+                <td>
+                  The TacThru sensor features an extended linkage that serves as gripper fingers.
+                </td>
+              </tr>
+              <tr>
+                <td valign="top" width="40">(c)</td>
+                <td>
+                  The TacThru-UMI platform includes a robot end-effector (left) and a data collector
+                  (right) that share identical body and finger designs.
+                </td>
+              </tr>
+            </table>
+            <p>
+              <span class="link-block">
+                <br><a
+                  href="https://docs.google.com/document/d/1fpZRiGoxWqLoFs-zxnG4d_d3hy0eHjlLA4nsuEKvCEg/edit?usp=sharing"
+                  target="_blank" class="external-link button is-normal is-rounded is-dark">
+                  🛠️ Hardware Guide
+                </a>
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section pt-0">
+    <div class="container is-max-desktop">
+      <div class="hero-body py-0">
+
+        <div class="column is-full-width has-text-centered mt-5 mb-5">
+          <h2 class="title is-3">Manipulation with TacThru-UMI</h2>
+        </div>
+
+        <div class="columns is-centered is-multiline">
+
+          <div class="column is-full has-text-centered">
+            <img src="static/images/Tasks.svg" alt="Tasks" style="width: 100%; max-width: 900px;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section pt-0">
+    <div class="container is-max-desktop">
+
+      <!-- <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Tasks Rollouts</h2>
+        </div>
+      </div> -->
+
+      <div
+        style="display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: #666; margin-bottom: 0.25rem;">
+        <span>
+          ⓘ Use
+        </span>
+
+        <!-- fake button demo (not clickable) -->
+        <button class="button is-light is-rounded is-small"
+          style="margin: 0 0.3rem; pointer-events: none; opacity: 0.8;">
+          <span class="icon">
+            <i class="fas fa-chevron-left"></i>
+          </span>
+        </button>
+        /
+        <button class="button is-light is-rounded is-small"
+          style="margin: 0 0.3rem; pointer-events: none; opacity: 0.8;">
+          <span class="icon">
+            <i class="fas fa-chevron-right"></i>
+          </span>
+        </button>
+
+        <span>
+          to browse different rollouts for the tasks.
+        </span>
+      </div>
+      <div style="height: 1.5rem;"></div>
+
+
+      <div class="columns is-multiline is-centered">
+
+        <div class="column is-full">
+          <div class="content has-text-centered">
+            <h4 class="title is-4">Pick Bottle</h4>
+            <p style="margin-top: -0.5rem; margin-bottom: 0.5rem;">
+              Goal: Pick up the bottle and put it into a bowl <br>
+              <span style="font-size: 0.95rem; color: #666;">
+                Validates TacThru-UMI's effectiveness in basic imitation learning and real-world execution.
+              </span>
+            </p>
+            <div class="task-slider" data-task="pickbottle">
+              <div class="task-slide is-active" data-caption="Run 1: standard rollout of Pick Bottle.">
+                <video width="95%" loop autoplay playsinline muted>
+                  <source src="static/videos/pickbottle.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="task-slide" data-caption="Run 2: different initial pose and bottle orientation.">
+                <video width="95%" loop autoplay playsinline muted>
+                  <source src="static/videos/pickbottle2.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="task-slide" data-caption="Run 3: different initial pose and bottle orientation.">
+                <video width="95%" loop autoplay playsinline muted>
+                  <source src="static/videos/pickbottle3.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="video-caption">
+                <span class="task-caption" style="font-size: 0.85rem; color: #666;"></span>
+              </div>
+              <div class="task-slider-nav" style="margin-top: 0.3rem;">
+                <button class="task-prev button is-light is-rounded" aria-label="Previous video">
+                  <span class="icon">
+                    <i class="fas fa-chevron-left"></i>
+                  </span>
+                </button>
+                <button class="task-next button is-light is-rounded" aria-label="Next video"
+                  style="margin-left: 0.4rem;">
+                  <span class="icon">
+                    <i class="fas fa-chevron-right"></i>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="column is-full">
+          <div class="content has-text-centered">
+            <h4 class="title is-4">Pull Tissue</h4>
+            <p style="margin-top: -0.5rem; margin-bottom: 0.5rem;">
+              Goal: Grasp a tissue and pull it out <br>
+              <span style="font-size: 0.95rem; color: #666;">
+                Evaluates TacThru's visual perception capability for handling thin and soft objects where tactile
+                feedback is unreliable.
+              </span>
+            </p>
+            <div class="task-slider" data-task="pulltissue">
+              <div class="task-slide is-active" data-caption="Run 1: standard rollout of Pull Tissue.">
+                <video width="95%" loop autoplay playsinline muted>
+                  <source src="static/videos/pulltissue.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="task-slide" data-caption="Run 2: different initial pose.">
+                <video width="95%" loop autoplay playsinline muted>
+                  <source src="static/videos/pulltissue2.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="task-slide" data-caption="Run 3: occasional slips caused by loose grasps or noise can be detected and corrected by TacThru through
+                  automatic retries.">
+                <video width="95%" loop autoplay playsinline muted>
+                  <source src="static/videos/pulltissue3.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="video-caption">
+                <span class="task-caption" style="font-size: 0.85rem; color: #666;"></span>
+              </div>
+              <div class="task-slider-nav" style="margin-top: 0.3rem;">
+                <button class="task-prev button is-light is-rounded" aria-label="Previous video">
+                  <span class="icon">
+                    <i class="fas fa-chevron-left"></i>
+                  </span>
+                </button>
+                <button class="task-next button is-light is-rounded" aria-label="Next video"
+                  style="margin-left: 0.4rem;">
+                  <span class="icon">
+                    <i class="fas fa-chevron-right"></i>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="column is-full">
+          <div class="content has-text-centered">
+            <h4 class="title is-4">Sort Bolt</h4>
+            <p style="margin-top: -0.5rem; margin-bottom: 0.5rem;">
+              Goal: Grasp a bolt and sort it into the corresponding bowl <br>
+              <span style="font-size: 0.95rem; color: #666;">
+                Assesses TacThru's capability to distinguish object shape and color through STS perception.
+              </span>
+            </p>
+            <div class="task-slider" data-task="sortbolt">
+              <div class="task-slide is-active"
+                data-caption="Run 1: put the black button-head bolt into the orange bowl.">
+                <video width="95%" loop autoplay playsinline muted>
+                  <source src="static/videos/sortbolt.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="task-slide" data-caption="Run 2: put the silver socket-head bolt into the blue bowl.">
+                <video width="95%" loop autoplay playsinline muted>
+                  <source src="static/videos/sortbolt2.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="task-slide" data-caption="Run 3: put the black socket-head bolt into the white bowl.">
+                <video width="95%" loop autoplay playsinline muted>
+                  <source src="static/videos/sortbolt3.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="video-caption">
+                <span class="task-caption" style="font-size: 0.85rem; color: #666;"></span>
+              </div>
+              <div class="task-slider-nav" style="margin-top: 0.3rem;">
+                <button class="task-prev button is-light is-rounded" aria-label="Previous video">
+                  <span class="icon">
+                    <i class="fas fa-chevron-left"></i>
+                  </span>
+                </button>
+                <button class="task-next button is-light is-rounded" aria-label="Next video"
+                  style="margin-left: 0.4rem;">
+                  <span class="icon">
+                    <i class="fas fa-chevron-right"></i>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="column is-full">
+          <div class="content has-text-centered">
+            <h4 class="title is-4">Hang Scissors</h4>
+            <p style="margin-top: -0.5rem; margin-bottom: 0.5rem;">
+              Goal: Grasp a pair of scissors and hang it onto the hook <br>
+              <span style="font-size: 0.95rem; color: #666;">
+                Evaluates whether tactile feedback can reliably distinguish task completion from missed attempts.
+              </span>
+            </p>
+            <div class="task-slider" data-task="hangscissors">
+              <div class="task-slide is-active"
+                data-caption="Run 1: standard rollout of Hang Scissors, succeeded on the first attempt.">
+                <video width="95%" loop autoplay playsinline muted>
+                  <source src="static/videos/hangscissors3.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="task-slide" data-caption="Run 2: first attempt detected as failure, succeeded after retry.">
+                <video width="95%" loop autoplay playsinline muted>
+                  <source src="static/videos/hangscissors2.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="task-slide" data-caption="Run 3: first attempt detected as failure, succeeded after retry.">
+                <video width="95%" loop autoplay playsinline muted>
+                  <source src="static/videos/hangscissors.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="video-caption">
+                <span class="task-caption" style="font-size: 0.85rem; color: #666;"></span>
+              </div>
+              <div class="task-slider-nav" style="margin-top: 0.3rem;">
+                <button class="task-prev button is-light is-rounded" aria-label="Previous video">
+                  <span class="icon">
+                    <i class="fas fa-chevron-left"></i>
+                  </span>
+                </button>
+                <button class="task-next button is-light is-rounded" aria-label="Next video"
+                  style="margin-left: 0.4rem;">
+                  <span class="icon">
+                    <i class="fas fa-chevron-right"></i>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="column is-full">
+          <div class="content has-text-centered">
+            <h4 class="title is-4">Insert Cap</h4>
+            <p style="margin-top: -0.5rem; margin-bottom: 0.5rem;">
+              Goal: Pick up the bottle cap and insert it onto a mount <br>
+              <span style="font-size: 0.95rem; color: #666;">
+                Assesses TacThru's ability to perform visual servoing when visible, and fall back to tactile guidance
+                under occlusion.
+              </span>
+            </p>
+            <div class="task-slider" data-task="insertcap">
+              <div class="task-slide is-active" data-caption="Run 1: the mount is observable upon approaching, enabling active alignment via vision-based proximity
+                  sensing.">
+                <video width="95%" loop autoplay playsinline muted>
+                  <source src="static/videos/insertcap.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="task-slide" data-caption="Run 2: the mount is observable upon approaching, enabling active alignment via vision-based proximity
+                  sensing.">
+                <video width="95%" loop autoplay playsinline muted>
+                  <source src="static/videos/insertcap2.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="task-slide"
+                data-caption="Run 3: the mount is occluded by the grasping pose, so the policy uses tactile perception as fallback.">
+                <video width="95%" loop autoplay playsinline muted>
+                  <source src="static/videos/insertcap3.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="video-caption">
+                <span class="task-caption" style="font-size: 0.85rem; color: #666;"></span>
+              </div>
+              <div class="task-slider-nav" style="margin-top: 0.3rem;">
+                <button class="task-prev button is-light is-rounded" aria-label="Previous video">
+                  <span class="icon">
+                    <i class="fas fa-chevron-left"></i>
+                  </span>
+                </button>
+                <button class="task-next button is-light is-rounded" aria-label="Next video"
+                  style="margin-left: 0.4rem;">
+                  <span class="icon">
+                    <i class="fas fa-chevron-right"></i>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns is-centered is-vcentered is-multiline mt-5">
+          <div class="column is-full has-text-centered mt-5">
+            <h4 class="title is-4" style="margin-top: 1rem;">Results</h4>
+          </div>
+
+          <div class="column is-7 has-text-centered">
+            <img src="static/images/Results.svg" alt="Results" style="width: 100%; max-width: 900px;">
+          </div>
+
+          <div class="column is-5">
+            <div class="results-text">
+              <p>
+                TT-M (TacThru with markers) achieves the highest overall success rate (85.5%). <br><br>
+                Each task targets a specific sensing capability: PickBottle (basic manipulation), PullTissue
+                (thin-and-soft object manipulation), SortBolt (visual discrimination), HangScissors (tactile
+                discrimination), and InsertCap (multimodal fusion). <br><br>
+                Error bars show standard deviation across evaluation, and the rightmost column presents overall
+                performance averages. <br><br>
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section" id="Ack">
+    <div class="container is-max-desktop content">
+      <h2 class="title">Acknowledgement</h2>
+      <p>
+        We thank Lei Yan (LeapZenith AI Research), Shengyu Guo (PKU), Yu
+        Liu (THU), Leiyao Cui (PKU), and Zhen Chen (BIGAI) for their
+        assistance.
+        This work is supported in part by the National Science and
+        Technology Innovation 2030 Major Program (2025ZD0219400),
+        the National Natural Science Foundation of China (62376009),
+        the Beijing Nova Program, the State Key Lab of General AI at
+        Peking University, the PKU-BingJi Joint Laboratory for Artificial
+        Intelligence, and the National Comprehensive Experimental Base
+        for Governance of Intelligent Society, Wuhan East Lake High-Tech
+        Development Zone.
+      </p>
+
+    </div>
+  </section>
+
+  <!-- <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@article{
+}</code></pre>
+    </div>
+  </section> -->
+
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website is licensed under a <a rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+            <p>
+              Template borrowed from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const sliders = document.querySelectorAll('.task-slider');
+
+      sliders.forEach(function (slider) {
+        const slides = slider.querySelectorAll('.task-slide');
+        const captionEl = slider.querySelector('.task-caption');
+        const prevBtn = slider.querySelector('.task-prev');
+        const nextBtn = slider.querySelector('.task-next');
+
+        if (slides.length === 0) return;
+
+        let current = 0;
+
+        function showSlide(index) {
+          slides.forEach((s, i) => {
+            if (i === index) {
+              s.classList.add('is-active');
+            } else {
+              s.classList.remove('is-active');
+            }
+          });
+
+          const activeSlide = slides[index];
+          const caption = activeSlide.dataset.caption || '';
+          if (captionEl) {
+            captionEl.innerHTML = caption;
+          }
+
+          current = index;
+        }
+
+        // 初始文字
+        showSlide(0);
+
+        if (prevBtn) {
+          prevBtn.addEventListener('click', function () {
+            const nextIndex = (current - 1 + slides.length) % slides.length;
+            showSlide(nextIndex);
+          });
+        }
+
+        if (nextBtn) {
+          nextBtn.addEventListener('click', function () {
+            const nextIndex = (current + 1) % slides.length;
+            showSlide(nextIndex);
+          });
+        }
+      });
+    });
+  </script>
+
+
+</body>
+
+</html>
