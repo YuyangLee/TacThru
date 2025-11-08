@@ -1,0 +1,21 @@
+!.vscode/
+uv.lock
+.venv/
+*DS_Store
+*pycache*
+
+.idea/
+.ruff_cache
+.vscode/.history
+.hydra/
+node_modules/
+.next/
+wandb/
+*.ckpt
+
+htmlcov
+.coverage*
+
+# Training dataset and result files
+data/tasks/*/*.zarr.zip
+data/tasks/*/train

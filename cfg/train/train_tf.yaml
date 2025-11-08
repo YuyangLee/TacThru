@@ -1,0 +1,131 @@
+defaults:
+  - _self_
+  - task: pick_bottle
+
+name: transformer_tacthru_workspace
+_target_: diffusion_policy.workspace.train_diffusion_workspace.TrainDiffusionImageWorkspace
+
+task_name: ${task.name}
+shape_meta: ${task.shape_meta}
+exp_name: "run"
+tac_active_keys: []
+
+load_ckpt:
+
+n_action_steps: 8
+
+policy:
+  _target_: diffusion_policy.policy.diffusion_transformer_timm_policy.DiffusionTransformerTimmPolicy
+
+  shape_meta: ${shape_meta}
+
+  noise_scheduler:
+    _target_: diffusers.DDIMScheduler
+    num_train_timesteps: 50
+    beta_start: 0.0001
+    beta_end: 0.02
+    beta_schedule: squaredcos_cap_v2
+    clip_sample: True
+    set_alpha_to_one: True
+    steps_offset: 0
+    prediction_type: epsilon # or sample
+
+  obs_encoder:
+    _target_: diffusion_policy.model.vision.transformer_obs_encoder.TransformerTacThruObsEncoder
+    shape_meta: ${shape_meta}
+    n_emb: 768
+    tac_lr_shared: true
+    feature_fusion: null
+
+  num_inference_steps: 16
+  input_pertub: 0.1 # reference: https://github.com/forever208/DDPM-IP
+  n_layer: 5 #7
+  n_head: 8
+  n_emb: 768
+  p_drop_attn: 0.1
+
+ema:
+  _target_: diffusion_policy.model.diffusion.ema_model.EMAModel
+  update_after_step: 0
+  inv_gamma: 1.0
+  power: 0.75
+  min_value: 0.0
+  max_value: 0.9999
+
+dataloader:
+  batch_size: 64
+  num_workers: 8
+  shuffle: True
+  pin_memory: True
+  persistent_workers: True
+
+val_dataloader:
+  batch_size: 64
+  num_workers: 8
+  shuffle: False
+  pin_memory: True
+  persistent_workers: True
+
+optimizer:
+  _target_: torch.optim.AdamW
+  lr: 3.0e-4
+  betas: [0.95, 0.999]
+  eps: 1.0e-8
+  weight_decay: 1.0e-6
+
+training:
+  device: "cuda:0"
+  seed: 44
+  debug: False
+  resume: False
+  # optimization
+  lr_scheduler: cosine
+  lr_warmup_steps: 2000
+  num_epochs: 151
+  gradient_accumulate_every: 1
+  # EMA destroys performance when used with BatchNorm
+  # replace BatchNorm with GroupNorm.
+  use_ema: True
+  freeze_encoder: False
+  # training loop control
+  # in epochs
+  rollout_every: 10
+  checkpoint_every: 10
+  val_every: 10
+  sample_every: 10
+  # steps per epoch
+  max_train_steps: null
+  max_val_steps: null
+  # misc
+  tqdm_interval_sec: 1.0
+
+logging:
+  project: tacthru
+  resume: False
+  mode: online
+  name: ${now:%m-%d_%H-%M-%S}_${task_name}_${exp_name}
+  tags: ["${name}", "${task_name}", "${exp_name}"]
+  id: null
+  group: null
+
+checkpoint:
+  topk:
+    monitor_key: train_loss
+    mode: min
+    k: 20
+    format_str: "epoch={epoch:04d}-train_loss={train_loss:.3f}.ckpt"
+  save_last_ckpt: True
+  save_last_snapshot: False
+
+multi_run:
+  run_dir: data/outputs/${now:%Y.%m.%d}/${now:%H.%M.%S}_${task_name}_${exp_name}
+  wandb_name_base: ${now:%Y.%m.%d-%H.%M.%S}_${name}_${task_name}_${exp_name}
+
+hydra:
+  job:
+    override_dirname: ${name}
+  run:
+    dir: ${oc.dir:${task.dataset_path}}/train/${now:%Y.%m.%d}/${now:%H.%M.%S}_${task_name}_${exp_name}
+  sweep:
+    dir: ${oc.dir:${task.dataset_path}}/train/${now:%Y.%m.%d}/${now:%H.%M.%S}_${task_name}_${exp_name}
+    subdir: ${hydra.job.num}

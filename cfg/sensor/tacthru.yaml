@@ -1,0 +1,32 @@
+name: TacThru
+cam_idxs: ["usb-0000:0c:00.3-2"]
+fps: 30 # 120
+get_max_k: 30
+receive_latency: 0.115
+with_marker: False
+put_downsample: False
+put_fps: 30
+tracking:
+  tracking_pts_path: data/tacthru/ref_kpts.npy
+optics:
+  CameraMatrix:
+    - - 1590.533675861239
+      - 0.0
+      - 308.68153028114716
+    - - 0.0
+      - 1569.4729856326753
+      - 223.17613447011814
+    - - 0.0
+      - 0.0
+      - 1.0
+  CropCoords:
+    - 110
+    - 30
+    - 510
+    - 430
+  DistCoeffs:
+    - - 19.10303141980389
+      - -787.9108326560139
+      - -0.01645601245931828
+      - 0.11167750670519655
+      - 11670.937615583738

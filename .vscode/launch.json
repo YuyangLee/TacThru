@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+        },
+        {
+            "name": "Train Policy (TF DP)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "scripts/train.py",
+            "args": [
+                "--config-name=train_tf",
+                "task=pull_tissue",
+                "dataloader.batch_size=4",
+                "val_dataloader.batch_size=4",
+                "tac_active_keys=[tacthru_l_rgb,tacthru_l_marker]",
+                "training.debug=True",
+            ],
+            "console": "integratedTerminal"
+        }
+    ]
+}

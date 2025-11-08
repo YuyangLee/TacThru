@@ -1,0 +1,38 @@
+frequency: 20
+n_obs_steps: ${train.task.img_obs_horizon}
+n_proprio_steps: ${train.task.low_dim_obs_horizon}
+obs_image_resolution: [224, 224]
+max_obs_buffer_size: 30
+obs_float32: False
+max_pos_speed: 0.25
+max_rot_speed: 0.6
+init_joints: False
+video_capture_fps: 60
+video_capture_resolution: [1280, 720]
+record_raw_video: True
+thread_per_video: 4
+steps_per_inference: 8
+max_duration: 600
+video_crf: 21
+
+cv2_num_threads: 5
+
+ckpt_path:
+
+# Debug and reproducibility
+debug: False
+seed: 42
+exp_name: run
+vis_camera_idx: 0
+record_video: True
+
+hydra:
+  run:
+    dir: .
+
+defaults:
+  - _self_
+  - camera: gopro9
+  - sensor: tacthru
+  - train: train_tf
+  - override hydra/job_logging: disabled

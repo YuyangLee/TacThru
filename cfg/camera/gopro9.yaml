@@ -1,0 +1,12 @@
+dev_video_path: /dev/v4l/by-id/usb-Actions_Micro_UGREEN_25854_-468176561-video-index0
+resolution: [1280, 720]
+capture_fps: 60
+put_fps:
+put_downsample: False
+record_fps: 60
+get_max_k: 30
+verbose: False
+num_threads: 3
+receive_latency: 0.153
+cap_buffer_size: 1
+intr_path:

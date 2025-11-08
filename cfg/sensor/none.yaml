@@ -1,0 +1,8 @@
+name: None
+cam_idxs: []
+fps: 30 # 120
+get_max_k: 30
+receive_latency: 0.115
+with_marker: False
+put_downsample: False
+put_fps: 30

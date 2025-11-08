@@ -1,0 +1,151 @@
+name: task_name
+
+camera_obs_latency: 0.125
+tacthru_obs_latency: 0.116
+robot_obs_latency: 0.0001
+gripper_obs_latency: 0.02
+dataset_frequeny: 0 #59.94
+obs_down_sample_steps: 3 # 3, 1
+
+low_dim_obs_horizon: 2
+img_obs_horizon: 1
+action_horizon: 16
+ignore_proprioception: False
+
+shape_meta: &shape_meta
+  obs:
+    # gopro
+    camera0_rgb:
+      shape: [3, 224, 224]
+      horizon: ${task.img_obs_horizon} # int
+      latency_steps: 0 # float
+      down_sample_steps: ${task.obs_down_sample_steps} # int
+      type: rgb
+      ignore_by_policy: False
+      encoder: vit_base_patch14_reg4_dinov2.lvd142m
+      encoder_pretrained: True
+      encoder_lr: 5e-4
+      encoder_frozen: True
+      append_adapter: False
+      encoder_args:
+        num_classes: 0
+        global_pool: ""
+
+    ## RGB channel
+    tacthru_l_rgb:
+      shape: [3, 224, 224]
+      horizon: ${task.img_obs_horizon} # int
+      latency_steps: 0 # float
+      down_sample_steps: ${task.obs_down_sample_steps} # int
+      type: tac_rgb
+      encoder: vit_small_patch14_reg4_dinov2.lvd142m
+      encoder_pretrained: True
+      encoder_lr: 1e-3
+      encoder_frozen: True
+      append_adapter: False
+      dropout: 0.25
+      encoder_args:
+        num_classes: 0
+        global_pool: ""
+
+    tacthru_r_rgb:
+      shape: [3, 224, 224]
+      horizon: ${task.img_obs_horizon} # int
+      latency_steps: 0 # float
+      down_sample_steps: ${task.obs_down_sample_steps} # int
+      type: tac_rgb
+      encoder: vit_small_patch14_reg4_dinov2.lvd142m
+      encoder_pretrained: True
+      encoder_lr: 1e-4
+      append_adapter: False
+      encoder_frozen: True
+      dropout: 0.1
+      encoder_args:
+        num_classes: 0
+        global_pool: ""
+
+    ## Shear marker flows
+    tacthru_l_marker:
+      shape: [64, 2]
+      horizon: ${task.img_obs_horizon} # int
+      latency_steps: 0 # float
+      down_sample_steps: ${task.obs_down_sample_steps} # int
+      encoder: mlp
+      type: tac_rgb
+      ignore_by_policy: False
+      dropout: 0.1
+    tacthru_r_marker:
+      shape: [64, 2]
+      horizon: ${task.img_obs_horizon} # int
+      latency_steps: 0 # float
+      down_sample_steps: ${task.obs_down_sample_steps} # int
+      encoder: mlp
+      type: tac_rgb
+      ignore_by_policy: False
+      dropout: 0.1
+
+    # Robot observations
+    robot0_eef_pos:
+      shape: [3]
+      horizon: ${task.low_dim_obs_horizon} # int
+      latency_steps: ${eval:'(${task.camera_obs_latency} - ${task.robot_obs_latency}) * ${task.dataset_frequeny}'} # float
+      down_sample_steps: ${task.obs_down_sample_steps} # float
+      type: low_dim
+      ignore_by_policy: ${task.ignore_proprioception}
+      dropout: 0.25
+    robot0_eef_rot_axis_angle:
+      raw_shape: [3]
+      shape: [6]
+      horizon: ${task.low_dim_obs_horizon} # int
+      latency_steps: ${eval:'(${task.camera_obs_latency} - ${task.robot_obs_latency}) * ${task.dataset_frequeny}'} # float
+      down_sample_steps: ${task.obs_down_sample_steps} # float
+      type: low_dim
+      rotation_rep: rotation_6d
+      ignore_by_policy: ${task.ignore_proprioception}
+      dropout: 0.25
+    robot0_gripper_width:
+      shape: [1]
+      horizon: ${task.low_dim_obs_horizon} # int
+      latency_steps: ${eval:'(${task.camera_obs_latency} - ${task.gripper_obs_latency}) * ${task.dataset_frequeny}'} # float
+      down_sample_steps: ${task.obs_down_sample_steps} # float
+      type: low_dim
+      ignore_by_policy: ${task.ignore_proprioception}
+      dropout: 0.25
+    robot0_eef_rot_axis_angle_wrt_start:
+      raw_shape: [3]
+      shape: [6]
+      horizon: ${task.low_dim_obs_horizon} # int
+      latency_steps: ${eval:'(${task.camera_obs_latency} - ${task.robot_obs_latency}) * ${task.dataset_frequeny}'} # float
+      down_sample_steps: ${task.obs_down_sample_steps} # float
+      type: low_dim
+      ignore_by_policy: ${task.ignore_proprioception}
+      dropout: 0.25
+  action:
+    shape: [10]
+    horizon: ${task.action_horizon}
+    latency_steps: 0 # float
+    down_sample_steps: ${task.obs_down_sample_steps} # int
+    rotation_rep: rotation_6d
+
+task_name: &task_name umi_tacthru
+dataset_path: data/tasks/TaskName/TaskName.zarr.zip
+pose_repr: &pose_repr
+  obs_pose_repr: relative # abs or rel
+  action_pose_repr: relative # abs or rel or delta
+
+env_runner:
+  _target_: diffusion_policy.env_runner.base_image_runner.BaseImageRunner
+
+dataset:
+  _target_: diffusion_policy.dataset.umi_dataset.UmiDataset
+  shape_meta: ${task.shape_meta}
+  dataset_path: ${task.dataset_path}
+  cache_dir: null
+  pose_repr: *pose_repr
+  action_padding: False
+  temporally_independent_normalization: False
+  repeat_frame_prob: 0.0
+  max_duration: null
+  seed: 42
+  val_ratio: 0.05
+  proprio_stretching: False

@@ -1,0 +1,3 @@
+[submodule "data/tasks"]
+	path = data/tasks
+	url = git@hf.co:datasets/aidenli/tacthru_umi_tasks
