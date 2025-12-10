@@ -17,6 +17,9 @@
 [💾 Datasets](https://huggingface.co/datasets/aidenli/tacthru_umi_tasks) |
 [🛠️ Hardware Guide](https://docs.google.com/document/d/1fpZRiGoxWqLoFs-zxnG4d_d3hy0eHjlLA4nsuEKvCEg/edit?usp=sharing)
 
+![teaser](assets/teaser_dm.png#gh-dark-mode-only)
+![teaser](assets/teaser.png#gh-light-mode-only)
+
 ## Codebase Structure
 
 - `assets/` includes necesssary assets for this repo.
