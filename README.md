@@ -12,8 +12,8 @@
 <sup>6</sup> University of Cambridge<br/>
 
 [🌐 Website](https://go.yuyang.li/tacthru) |
-[📑 Paper](./assets/tacthru-paper.pdf) |
-[📹 Video](https://vimeo.com) |
+[📑 Paper](https://tacthru.yuyang.li/assets/TacThru.pdf) |
+[📹 Video](https://vimeo.com/1145307821) |
 [💾 Datasets](https://huggingface.co/datasets/aidenli/tacthru_umi_tasks) |
 [🛠️ Hardware Guide](https://docs.google.com/document/d/1fpZRiGoxWqLoFs-zxnG4d_d3hy0eHjlLA4nsuEKvCEg/edit?usp=sharing)
 
