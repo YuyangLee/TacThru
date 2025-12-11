@@ -1,4 +1,4 @@
-# TacThru: Fingetip-integrated Tactile and Visual Perception for Fine-grained and Contact-rich Manipulation
+# Simultaneous Tactile-Visual Perception for Learning Multimodal Robot Manipulation
 
 **Yuyang Li <sup>1,2,3,4\*</sup>, Yinghan Chen <sup>1,2,4,6\*</sup>, Zihang Zhao <sup>1,2,4</sup>, Puhao Li <sup>3,4</sup>, Tengyu Liu <sup>3,4&dagger;</sup>, Siyuan Huang <sup>3,4&dagger;</sup>, and Yixin Zhu <sup>1,2,4,5&dagger;</sup>**
 
@@ -142,10 +142,10 @@ You can check out hardware guide in [🛠️ Hardware Guide](https://docs.google
 If you find our work helpful, please consider citing it:
 
 ```bibtex
-@misc{li2025simultaneous,
-    title={Simultaneous Tactile-Visual Perception for Learning Multimodal Robot Manipulation},
-    author={Yuyang Li and Yinghan Chen and Zihang Zhao and Puhao Li and Tengyu Liu and Siyuan Huang and Yixin Zhu},
-    journal={arXiv preprint arXiv:2512.09851},
-    year={2025}
+@article{li2025simultaneous,
+  title={Simultaneous Tactile-Visual Perception for Learning Multimodal Robot Manipulation},
+  author={Yuyang Li and Yinghan Chen and Zihang Zhao and Puhao Li and Tengyu Liu and Siyuan Huang and Yixin Zhu},
+  journal={arXiv preprint arXiv:2512.09851},
+  year={2025}
 }
 ```
