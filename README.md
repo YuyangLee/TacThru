@@ -142,7 +142,10 @@ You can check out hardware guide in [🛠️ Hardware Guide](https://docs.google
 If you find our work helpful, please consider citing it:
 
 ```bibtex
-{
-    // TBD
+@misc{li2025simultaneous,
+    title={Simultaneous Tactile-Visual Perception for Learning Multimodal Robot Manipulation},
+    author={Yuyang Li and Yinghan Chen and Zihang Zhao and Puhao Li and Tengyu Liu and Siyuan Huang and Yixin Zhu},
+    journal={arXiv preprint arXiv:2512.09851},
+    year={2025}
 }
 ```
