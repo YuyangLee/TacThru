@@ -80,8 +80,8 @@ class KeypointsKFProcessor(FrameProcessor):
         self.n_kpts = 0
         self.max_n_kpts = 64
 
-        self.state_noise_cov = np.diag([0.01**2, 0.01**2])
-        self.obs_noise_cov = np.diag([0.1**2, 0.1**2])
+        self.state_noise_cov = np.diag([0.105**2, 0.105**2])
+        self.obs_noise_cov = np.diag([0.421**2, 0.421**2])
         self.kf_x = self.kpts_ref.copy()
         self.kf_A = self.kf_H = np.eye(2)
         self.kf_cov = np.zeros([len(self.kpts_ref), 2, 2], dtype=np.float32)
