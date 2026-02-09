@@ -86,7 +86,8 @@ class KeypointsKFProcessor(FrameProcessor):
         self.max_n_kpts = len(self.kpts_ref)
         self.marker_arange = np.arange(self.max_n_kpts)
 
-        self.x_max_dist = 25
+        self.x_max_dist = 10  # As reported
+        # self.x_max_dist = 25  # For looser filtering
 
         self.state_noise_cov = np.diag([0.105**2, 0.105**2])
         self.obs_noise_cov = np.diag([0.421**2, 0.421**2])
