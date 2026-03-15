@@ -41,6 +41,49 @@
       cursor: url('/assets/cursor/cursor_40.png') 0 0, url('/assets/cursor/cursor_40.png') 0 0, auto;
     }
 
+    .publication-subtitle {
+      margin-top: 1rem !important;
+      font-size: 1.5rem !important;
+      font-weight: 700;
+    }
+
+    .bibtex-header {
+      margin-bottom: 0.75rem;
+    }
+
+    .bibtex-block {
+      position: relative;
+    }
+
+    .bibtex-copy-button {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      width: 2rem;
+      height: 2rem;
+      border: 1px solid #dbdbdb;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.92);
+      color: #4a4a4a;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .bibtex-copy-button:hover {
+      background: #fff;
+      border-color: #b5b5b5;
+    }
+
+    .bibtex-copy-button.is-copied {
+      background: #363636;
+      color: #fff;
+      border-color: #363636;
+    }
+
     .task-slide {
       display: none;
     }
@@ -106,6 +149,7 @@
             <h1 class="title is-1 publication-title"><br />Simultaneous Tactile-Visual
               Perception for Learning
               Multimodal Robot Manipulation</h1>
+            <h2 class="subtitle is-4 publication-subtitle">IEEE Robotics and Automation Letters (RA-L)</h2>
             <div class="is-size-5 publication-authors">
               <span class="author-block"><a href="https://yuyangli.com">Yuyang Li</a><sup>1,2,3,4⚖️</sup>,</span>
               <span class="author-block"><a href="https://yinghanchen.com">Yinghan Chen</a><sup>1,2,4,6⚖️</sup>,</span>
@@ -137,12 +181,22 @@
 
                 <!-- Preprint -->
                 <span class="link-block">
-                  <a href="https://tacthru.yuyang.li/assets/TacThru.pdf" target="_blank"
+                  <a href="https://arxiv.org/abs/2512.09851" target="_blank"
                     class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">
                       <i class="fas fa-file-pdf"></i>
                     </span>
                     <span>Preprint</span>
+                  </a>
+                </span>
+
+                <span class="link-block">
+                  <a href="https://ieeexplore.ieee.org/abstract/document/11425767" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-ieee"></i>
+                    </span>
+                    <span>IEEE</span>
                   </a>
                 </span>
 
@@ -671,35 +725,26 @@
     </div>
   </section>
 
-  <section class="section" id="Ack">
-    <div class="container is-max-desktop content">
-      <h2 class="title">Acknowledgement</h2>
-      <p>
-        We thank Lei Yan (LeapZenith AI Research), Shengyu Guo (PKU), Yu
-        Liu (THU), Leiyao Cui (PKU), and Zhen Chen (BIGAI) for their
-        assistance.
-        This work is supported in part by the National Science and
-        Technology Innovation 2030 Major Program (2025ZD0219400),
-        the National Natural Science Foundation of China (62376009),
-        the Beijing Nova Program, the State Key Lab of General AI at
-        Peking University, the PKU-BingJi Joint Laboratory for Artificial
-        Intelligence, and the National Comprehensive Experimental Base
-        for Governance of Intelligent Society, Wuhan East Lake High-Tech
-        Development Zone.
-      </p>
-
-    </div>
-  </section>
-
   <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
-      <h2 class="title">BibTeX</h2>
-      <pre><code>@article{li2025simultaneous,
-  title={Simultaneous Tactile-Visual Perception for Learning Multimodal Robot Manipulation},
-  author={Yuyang Li and Yinghan Chen and Zihang Zhao and Puhao Li and Tengyu Liu and Siyuan Huang and Yixin Zhu},
-  journal={arXiv preprint arXiv:2512.09851},
-  year={2025},
+      <div class="bibtex-header">
+        <h2 class="title">BibTeX</h2>
+      </div>
+      <div class="bibtex-block">
+        <button class="bibtex-copy-button" id="copy-bibtex-button" type="button" aria-label="Copy BibTeX to clipboard"
+          title="Copy BibTeX">
+          <span class="icon is-small">
+            <i class="far fa-copy" aria-hidden="true"></i>
+          </span>
+        </button>
+        <pre><code id="bibtex-content">@article{li2026simultaneous,
+  title={Simultaneous tactile-visual perception for learning multimodal robot manipulation},
+  author={Li, Yuyang and Chen, Yinghan and Zhao, Zihang and Li, Puhao and Liu, Tengyu and Huang, Siyuan and Zhu, Yixin},
+  journal={IEEE Robotics and Automation Letters},
+  year={2026},
+  publisher={IEEE}
 }</code></pre>
+      </div>
     </div>
   </section>
 
@@ -726,6 +771,19 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const sliders = document.querySelectorAll('.task-slider');
+      const copyBibtexButton = document.getElementById('copy-bibtex-button');
+      const bibtexContent = document.getElementById('bibtex-content');
+
+      function setCopyButtonState(copied, failed) {
+        if (!copyBibtexButton) return;
+
+        copyBibtexButton.classList.toggle('is-copied', copied);
+        copyBibtexButton.title = copied ? 'Copied' : failed ? 'Copy failed' : 'Copy BibTeX';
+        copyBibtexButton.setAttribute('aria-label', copied ? 'BibTeX copied' : failed ? 'Copy BibTeX failed' : 'Copy BibTeX to clipboard');
+        copyBibtexButton.innerHTML = copied
+          ? '<span class="icon is-small"><i class="fas fa-check" aria-hidden="true"></i></span>'
+          : '<span class="icon is-small"><i class="far fa-copy" aria-hidden="true"></i></span>';
+      }
 
       sliders.forEach(function (slider) {
         const slides = slider.querySelectorAll('.task-slide');
@@ -772,6 +830,21 @@
           });
         }
       });
+
+      if (copyBibtexButton && bibtexContent) {
+        copyBibtexButton.addEventListener('click', async function () {
+          try {
+            await navigator.clipboard.writeText(bibtexContent.textContent);
+            setCopyButtonState(true, false);
+          } catch (error) {
+            setCopyButtonState(false, true);
+          }
+
+          window.setTimeout(function () {
+            setCopyButtonState(false, false);
+          }, 1600);
+        });
+      }
     });
   </script>
 
