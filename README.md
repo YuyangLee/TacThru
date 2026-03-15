@@ -1,5 +1,7 @@
 # Simultaneous Tactile-Visual Perception for Learning Multimodal Robot Manipulation
 
+**IEEE Robotics and Automation Letters (RA-L)**
+
 **Yuyang Li <sup>1,2,3,4\*</sup>, Yinghan Chen <sup>1,2,4,6\*</sup>, Zihang Zhao <sup>1,2,4</sup>, Puhao Li <sup>3,4</sup>, Tengyu Liu <sup>3,4&dagger;</sup>, Siyuan Huang <sup>3,4&dagger;</sup>, and Yixin Zhu <sup>1,2,4,5&dagger;</sup>**
 
 <sup>\*</sup> Equal contribution&nbsp;&nbsp;<sup>&dagger;</sup> Corresponding Authors
@@ -12,7 +14,8 @@
 <sup>6</sup> University of Cambridge<br/>
 
 [🌐 Website](https://go.yuyang.li/tacthru) |
-[📑 Paper](https://tacthru.yuyang.li/assets/TacThru.pdf) |
+[📑 Preprint](https://arxiv.org/abs/2512.09851) |
+[📖 IEEE](https://ieeexplore.ieee.org/abstract/document/11425767) |
 [📹 Video](https://vimeo.com/1145307821) |
 [💾 Datasets](https://huggingface.co/datasets/aidenli/tacthru_umi_tasks) |
 [🛠️ Hardware Guide](https://docs.google.com/document/d/1fpZRiGoxWqLoFs-zxnG4d_d3hy0eHjlLA4nsuEKvCEg/edit?usp=sharing)
@@ -22,13 +25,13 @@
 
 ## Codebase Structure
 
-- `assets/` includes necesssary assets for this repo.
+- `assets/` includes necessary assets for this repo.
 - `cfg/` holds the configs for policy training.
 - `data/`
     - `data/marker_tests/` includes data for testing keyline marker tracking. It will also contain the downloaded TacThr-UMI datasets.
     - `data/tacthru/` includes the example model of our sensor, and the STEP file for our TacThru-UMI gripper.
 - `diffusion_policy/` includes necessary utils for the Diffusion Policy. The codes are modified from [real-stanford/diffusion_policy](https://github.com/real-stanford/diffusion_policy).
-- `utils/` hold utilities for TacThru signal processing and policy learning.
+- `utils/` holds utilities for TacThru signal processing and policy learning.
 - `scripts/` includes scripts for starting marker test, training, etc.
 
 ## Environment Setup
@@ -46,7 +49,7 @@ We use `uv` to manage the virtual environment:
 uv sync
 ```
 
-By default, the dependencies include necessary tools to test the keyline marker tracking of TacThru. Optional dependencies are used fortraining and validating robotic manipulation policies with TacThru-UMI:
+By default, the dependencies include necessary tools to test the keyline marker tracking of TacThru. Optional dependencies are used for training and validating robotic manipulation policies with TacThru-UMI:
 
 ```shell
 uv sync --extra umi
@@ -72,7 +75,7 @@ We provide all the datasets used in our experiments:
 - `HangScissors`
 - `InsertCap`
 
-They are provided in [our Hugging Face Dataset](https://huggingface.co/datasets/aidenli/tacthru_umi_tasks) and set up as a sub module under `data/tasks/` in this repo. Make sure you have access to the Hugging Face public datasets. To sync them:
+They are provided in [our Hugging Face Dataset](https://huggingface.co/datasets/aidenli/tacthru_umi_tasks) and set up as a sub-module under `data/tasks/` in this repo. Make sure you have access to the Hugging Face public datasets. To sync them:
 
 ```
 git submodule init
@@ -98,11 +101,11 @@ uv run scripts/train.py --config-name=train_tf exp_name=tf-$obs_tag-$exp_tag tas
 
 The `task` is one of: `pick_bottle`, `pull_tissue`, `sort_bolt`, `hang_scissors`, `insert_cap`.
 
-The `tac_active_keys` must includes the items in `train.task.shape_meta.obs`. In the provided dataset, `tacthru_l_*` belongs to the TacThru signals, installed as the left finger. `tacthru_r_*` belongs to the GelSight-type sensor signals (rectified).
+The `tac_active_keys` must include the items in `train.task.shape_meta.obs`. In the provided dataset, `tacthru_l_*` belongs to the TacThru signals, installed as the left finger. `tacthru_r_*` belongs to the GelSight-type sensor signals (rectified).
 
 ### Add New Tasks
 
-While we use a customized sensor, this codebase is theoretically compatible with any UMI system with vision-based tactile or STS sensor.
+While we use a customized sensor, this codebase is theoretically compatible with any UMI system with vision-based tactile or STS sensors.
 
 #### Dataset Structure
 
@@ -133,7 +136,7 @@ After getting the dataset Zarr file ready, create a task config in `cfg/train/ta
 
 ## Hardware Guide
 
-You can check out hardware guide in [🛠️ Hardware Guide](https://docs.google.com/document/d/1fpZRiGoxWqLoFs-zxnG4d_d3hy0eHjlLA4nsuEKvCEg/edit?usp=sharing).
+You can check out the hardware guide in [🛠️ Hardware Guide](https://docs.google.com/document/d/1fpZRiGoxWqLoFs-zxnG4d_d3hy0eHjlLA4nsuEKvCEg/edit?usp=sharing).
 
 ![UMI Robotic Gripper](./assets/umi_asm.png)
 
@@ -142,10 +145,11 @@ You can check out hardware guide in [🛠️ Hardware Guide](https://docs.google
 If you find our work helpful, please consider citing it:
 
 ```bibtex
-@article{li2025simultaneous,
-  title={Simultaneous Tactile-Visual Perception for Learning Multimodal Robot Manipulation},
-  author={Yuyang Li and Yinghan Chen and Zihang Zhao and Puhao Li and Tengyu Liu and Siyuan Huang and Yixin Zhu},
-  journal={arXiv preprint arXiv:2512.09851},
-  year={2025}
+@article{li2026simultaneous,
+  title={Simultaneous tactile-visual perception for learning multimodal robot manipulation},
+  author={Li, Yuyang and Chen, Yinghan and Zhao, Zihang and Li, Puhao and Liu, Tengyu and Huang, Siyuan and Zhu, Yixin},
+  journal={IEEE Robotics and Automation Letters},
+  year={2026},
+  publisher={IEEE}
 }
 ```
