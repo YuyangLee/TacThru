@@ -149,7 +149,10 @@ If you find our work helpful, please consider citing it:
   title={Simultaneous tactile-visual perception for learning multimodal robot manipulation},
   author={Li, Yuyang and Chen, Yinghan and Zhao, Zihang and Li, Puhao and Liu, Tengyu and Huang, Siyuan and Zhu, Yixin},
   journal={IEEE Robotics and Automation Letters},
+  publisher={IEEE},
   year={2026},
-  publisher={IEEE}
+  volume={11},
+  number={4},
+  pages={5254-5261}
 }
 ```
