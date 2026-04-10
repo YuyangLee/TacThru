@@ -92,7 +92,7 @@ You can also use [sprse checkout](https://git-scm.com/docs/git-sparse-checkout) 
 task=pick_bottle
 
 # TacThru w/ marker deviations
-tac_active_keys="[tacthru_l_rgb,tacthru_l_markers]"
+tac_active_keys="[tacthru_l_rgb,tacthru_l_marker]"
 obs_tag="tt_m"
 exp_tag="run"
 
